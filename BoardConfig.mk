@@ -36,8 +36,6 @@ USE_CAMERA_STUB := true
 
 TARGET_BOOTLOADER_BOARD_NAME := vivow
 
-TARGET_RECOVERY_FSTAB = device/htc/vivow/ramdisk/fstab.vivow
-
 # Use stock libril for now
 BOARD_HAS_EXTRA_SYS_PROPS := true
 
@@ -65,4 +63,22 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk1p1
 BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1
 BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
-BOARD_USES_MMCUTILS := true
+
+#TWRP / Recovery specific defines
+DEVICE_RESOLUTION := 480x800
+RECOVERY_FSTAB_VERSION := 2
+
+#Not sure why this is needed with twrp. Other devices I've looked at, don't have separate fstab's.
+ifeq ($(RECOVERY_BUILD),)
+    TARGET_RECOVERY_FSTAB = device/htc/vivow/ramdisk/etc/fstab.vivow
+else
+    TARGET_RECOVERY_FSTAB = device/htc/vivow/recovery/recovery.fstab
+endif
+
+TARGET_RECOVERY_INITRC := device/htc/vivow/recovery/init.rc
+TW_NO_SCREEN_BLANK := true
+#HAVE_SELINUX := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+#TW_INCLUDE_DUMLOCK := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
