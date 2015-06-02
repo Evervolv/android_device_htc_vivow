@@ -20,10 +20,7 @@
 # definition file).
 #
 
-# WARNING: This line must come *before* including the proprietary
-# variant, so that it gets overwritten by the parent (which goes
-# against the traditional rules of inheritance).
-USE_CAMERA_STUB := true
+TARGET_BOOTLOADER_BOARD_NAME := vivow
 
 # inherit from common msm7x30
 -include device/htc/msm7x30-common/BoardConfigCommon.mk
@@ -31,54 +28,24 @@ USE_CAMERA_STUB := true
 # inherit from the proprietary version
 -include vendor/htc/vivow/BoardConfigVendor.mk
 
-# inherit wifi defines
--include device/htc/msm7x30-common/bcmdhd.mk
-
-TARGET_BOOTLOADER_BOARD_NAME := vivow
-
-# Use stock libril for now
-BOARD_HAS_EXTRA_SYS_PROPS := true
-
-BOARD_KERNEL_CMDLINE := no_console_suspend=1
-BOARD_KERNEL_RECOVERY_CMDLINE := $(BOARD_KERNEL_CMDLINE) msmsdcc_power_gpio=88
-BOARD_KERNEL_BASE := 0x05000000
-BOARD_KERNEL_PAGE_SIZE := 4096
-BOARD_PAGE_SIZE := 00001000
-TARGET_KERNEL_CONFIG := evervolv_vivow_defconfig
-
-BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vivow
-BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
-
+# Camera
 BOARD_HAVE_HTC_FFC := true
 BOARD_USE_REVERSE_FFC := true
 
-TARGET_USERIMAGES_USE_EXT4 := true
+# FS
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 585101312
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 1232072704
 BOARD_BOOTIMAGE_PARTITION_SIZE := 4194304
-BOARD_FLASH_BLOCK_SIZE := 262144
 
-BOARD_HAS_LARGE_FILESYSTEM := true
+# GPS
+BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
+
+# Kernel
+BOARD_KERNEL_RECOVERY_CMDLINE := $(BOARD_KERNEL_CMDLINE) msmsdcc_power_gpio=88
+BOARD_KERNEL_BASE := 0x05000000
+
+# Props
+BOARD_HAS_EXTRA_SYS_PROPS := true
+
+# Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk1p1
-BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1
-BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
-
-#TWRP / Recovery specific defines
-DEVICE_RESOLUTION := 480x800
-RECOVERY_FSTAB_VERSION := 2
-
-#Not sure why this is needed with twrp. Other devices I've looked at, don't have separate fstab's.
-ifeq ($(RECOVERY_BUILD),)
-    TARGET_RECOVERY_FSTAB = device/htc/vivow/ramdisk/etc/fstab.vivow
-else
-    TARGET_RECOVERY_FSTAB = device/htc/vivow/recovery/recovery.fstab
-endif
-
-TARGET_RECOVERY_INITRC := device/htc/vivow/recovery/init.rc
-TW_NO_SCREEN_BLANK := true
-#HAVE_SELINUX := true
-TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
-#TW_INCLUDE_DUMLOCK := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
